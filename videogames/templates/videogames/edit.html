@@ -1,0 +1,21 @@
+{% extends 'videogames/base.html' %}
+
+{% block title %} Edit {% endblock %}
+
+{% block page_title %} Edit {% endblock %}
+
+{% block content %}
+
+<h2>{{videogame.game_name}}</h2>  
+
+<div class="mb-3">
+
+    <form action="{% url 'update' videogame.id %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" name = "update" value="Update">
+    </form>
+
+</div>
+
+{% endblock %}

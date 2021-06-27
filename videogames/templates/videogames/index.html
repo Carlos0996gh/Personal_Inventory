@@ -1,0 +1,84 @@
+{% extends 'videogames/base.html' %}
+
+{% block title %} Videogame List {% endblock %}
+
+{% block page_title %} Videogame List {% endblock %}
+
+{% block content %}
+
+    <h2>Total: {{ count }}</h2>
+    {% comment %} <h2>Page No: {{ videogame_list.number }}</h2> {% endcomment %}
+
+    <nav style="--bs-breadcrumb-divider: '&rsaquo;';" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Library</li>
+        </ol>
+    </nav>
+
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <a href="{% url 'add'%}" class="btn btn-primary" role='button'>Add Game</a>
+    </div>
+
+    <br>
+
+    {% if videogame_list %}
+        <table class = 'table'>
+            <tr class = 'table-dark'>
+                {% comment %} <th>Cover</th> {% endcomment %}
+                <th>Game</th>
+                <th>Platform</th>
+                <th>Developer</th>
+                <th></th>
+                {% comment %} <th><a href="{% url 'add_videogame'%}" role='button'>Add</a></th> {% endcomment %}
+            </tr>
+
+            {% for videogame in videogame_list.object_list %}
+                <tr>
+                    {% comment %} <td><a href="{% url 'item' videogame.id %}" role='button'><img src = 'https://carlos0996gh.github.io/GameCovers/{{videogame.game_cover}}'width ='100';></a></td> {% endcomment %}
+                    <td><a href="{% url 'item' videogame.id %}" role='button'>{{videogame.game_name}}</a></td>
+                    <td>{{videogame.platform_name}}</td>
+                    <td>{{videogame.developer_name}}</td>
+                    <td><a href="{% url 'edit' videogame.id %}" role='button'>&#9998;</a></td>
+                    {% comment %} <td><a href="{% url 'delete' videogame.id %}" role='button'>Delete</a></td> {% endcomment %}
+                </tr>
+            {% endfor %}
+        </table>
+
+        <!-- Paginación -->
+        <ul class="pagination justify-content-end">
+            {% if videogame_list.has_previous %}
+                <li class="page-item"><a class="page-link" href="{% url 'index' %}?page=1"> &laquo; </a></li>
+                {% comment %} <li class="page-item"><a class="page-link" href="{% url 'index' %}?page={{ videogame_list.previous_page_number }}"> &lsaquo; </a></li> {% endcomment %}
+                {% comment %} <li class="page-item"><a class="page-link" href="{% url 'index' %}?page={{ videogame_list.previous_page_number }}"> {{ videogame_list.previous_page_number }} </a></li> {% endcomment %}
+            {% else %}
+                <li class="page-item disabled"><a class="page-link"> &laquo; </a></li>
+                {% comment %} <li class="page-item disabled"><a class="page-link"> &lsaquo; </a></li> {% endcomment %}
+            {% endif%}
+
+            {% comment %} <li class="page-item active"><a class="page-link" href="#">{{ videogame_list.number }}</a></li> {% endcomment %}
+
+            {% for n in videogame_list.paginator.page_range %}
+                {% if videogame_list.number == n %}
+                    <li class="page-item active"><a class="page-link">{{ n }}</a></li>
+                {% elif n > videogame_list.number|add:'-4' and n < videogame_list.number|add:'4' %}
+                    <li class="page-item"><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if videogame_list.has_next %}
+            {% comment %} <li class="page-item"><a class="page-link" href="{% url 'index' %}?page={{ videogame_list.next_page_number }}"> {{ videogame_list.next_page_number }} </a></li> {% endcomment %}
+            {% comment %} <li class="page-item"><a class="page-link" href="{% url 'index' %}?page={{ videogame_list.next_page_number }}"> &rsaquo; </a></li> {% endcomment %}
+            <li class="page-item"><a class="page-link" href="{% url 'index' %}?page={{ videogame_list.paginator.num_pages }}"> &raquo; </a></li>
+            {% else %}
+                {% comment %} <li class="page-item disabled"><a class="page-link"> &rsaquo; </a></li> {% endcomment %}
+                <li class="page-item disabled"><a class="page-link"> &raquo; </a></li>
+            {% endif%}
+        </ul>
+        <!-- Fin de Paginación -->
+
+    {% else %}
+        <p>No videogames on the list.</p>
+    {% endif %}
+
+{% endblock %}

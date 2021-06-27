@@ -1,0 +1,53 @@
+{% extends 'videogames/base.html' %}
+
+{% block title %} Item {% endblock %}
+
+{% block page_title %} Item {% endblock %}
+
+{% block content %}
+
+    {% if videogame %}
+
+        {% for game in videogame %}
+
+            <div class='row'>
+
+                <div class='col-sm-12'>
+                    <a href="{% url 'index'%}" role='button'>Back</a>
+                    <h1>{{game.game_name}}</h1>
+                </div>
+
+            </div>
+
+            <div class="row">
+                
+                <div class="col-sm-6">
+                    <img src = 'https://carlos0996gh.github.io/GameCovers/{{game.game_cover}}'width ='250';>
+                </div>
+
+
+                <div class="col-sm-6">
+                    <h2> Game Info </h2>
+                    <h3>Platform: {{game.platform_name}}</h3>
+                    <h3>Developer: {{game.developer_name}}</h3>
+                    <h3>Publisher: {{game.publisher_name}}</h3>
+                    <h3>Release Date: {{game.game_release_date}}</h3>
+                    <h3>Genre: {{game.genre_name}}</h3>
+
+                    <h2> Collection Info </h2>
+                    <h3>Purchase Price: {{game.purchase_price}}</h3>
+                    <h3>Purchase Date: {{game.game_purchase_date}}</h3>
+                    <h3>Status: {{game.game_status}}</h3>
+                    <h3>Format: {{game.game_format}}</h3>
+                    <h3>Purchase Status: {{game.purchase_status}}</h3>
+                </div>
+
+            </div>
+
+        {% endfor %}
+        
+    {% else %}
+        <p>No info avaliable.</p>
+    {% endif %}
+
+{% endblock %}
